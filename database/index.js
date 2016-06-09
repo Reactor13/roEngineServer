@@ -53,9 +53,17 @@ db.once('open',  function()
 			{
 				var apiKey2 = new apiKey({
 					key    : '0000002',
-					origin : ['http://p-bot.ru'],
+					origin : ['http://p-bot.ru','http://chatbot.tw1.ru'],
 				});
 				apiKey2.save(function(err) {callback(err, apiKey2)})
+			},
+			function(callback)
+			{
+				var apiKey3 = new apiKey({
+					key    : '0000003',
+					origin : ['http://p-bot.ru','*']
+				});
+				apiKey3.save(function(err) {callback(err, apiKey3)})
 			},
 			function(callback)
 			{
@@ -145,27 +153,31 @@ exports.totalPatternsLength = totalPatternsLength;
 // *******************************************************
 function checkApiKey(apikey, origin, callback)
 {
-	console.log ('[Database] ... checkApiKey function');
+	console.log ('[Database] ... checkApiKey function --> starting');
 	apiKey.findOne({key: apikey}, function(err, founded_apikey)
 	{
 		if (err) 
 		{
+			console.log ('[Database] ... checkApiKey function --> complete width errors');
 			callback (null, false);
 		}
 		else
 		{
 			if (founded_apikey == null) 
 			{
+				console.log ('[Database] ... checkApiKey function --> complete, apikey does not exist');
 				callback (null, false);
 			}
 			else
-			{
-				if (founded_apikey.origin[0] == '*') 
+			{				
+				if (founded_apikey.origin.indexOf(origin) != -1) 
 				{
+					console.log ('[Database] ... checkApiKey function --> complete');
 					callback (null, true);
 				}
 				else
 				{
+					console.log ('[Database] ... checkApiKey function --> complete, origin does not match apikey');
 					callback (null, false);
 				}
 			}

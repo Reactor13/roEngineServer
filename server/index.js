@@ -35,7 +35,7 @@ var appServer = new http.Server(function(req,res)
 	var clientHost             = req.headers.host;
 	var clientOrigin           = req.headers.origin;
 	
-	if (clientOrigin === undefined) {clientOrigin = null}
+	if (clientOrigin === undefined) {clientOrigin = '*'}
 	console.log('[Server] New request from : ' + clientIP + ', host :' + clientHost + ', origin : ' + clientOrigin);
 	
 	if (urlParsed.pathname == '/')
@@ -67,7 +67,7 @@ var appServer = new http.Server(function(req,res)
 		else
 		{
 			correctRequest         = false;
-			incorrectRequestReason = 'Echo message is too long.';
+			incorrectRequestReason = '[ERROR] Echo message is too long.';
 		}
 	}	
 	
@@ -94,7 +94,7 @@ var appServer = new http.Server(function(req,res)
 				else
 				{
 					res.statusCode = 404;
-					res.end('Api key is invalid');
+					res.end('[ERROR] Api key is invalid');
 				}
 			});	
 		}
@@ -102,8 +102,8 @@ var appServer = new http.Server(function(req,res)
 	
 	if (correctRequest == false)
 	{
-		res.statusCode = 404
-		res.end('Incorrect request. ' + incorrectRequestReason);		
+		res.statusCode = 403
+		res.end('[ERROR] Incorrect request. ' + incorrectRequestReason);		
 	}
 })
 
