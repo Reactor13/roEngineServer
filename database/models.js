@@ -19,6 +19,7 @@
 
 var mongoose = require('mongoose'), Schema = mongoose.Schema;
 
+
 var patternSchema = new Schema({
 	bot_name:
 	{
@@ -40,5 +41,19 @@ var patternSchema = new Schema({
 		required : true	
 	}
 });   
-
 exports.Pattern = mongoose.model('Pattern', patternSchema);
+
+
+var apiKeySchema = new Schema({
+	key:
+	{
+		type     : String,
+		required : true	
+	},
+	origin:
+	{
+		type     : Array,
+		required : true	
+	}
+});
+exports.apiKey = mongoose.model('apiKey', apiKeySchema);

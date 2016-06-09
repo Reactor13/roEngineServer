@@ -25,6 +25,7 @@ var mongoose     = require('mongoose');
 var async        = require('async');
 var db           = mongoose.connection;
 var Pattern      = require('./models').Pattern;
+var apiKey       = require('./models').apiKey;
 
 mongoose.connect(serverConfig.mongoose.uri);
 db.on  ('error', function() {console.error('[Database] ... MongoDB not connected')});
@@ -40,6 +41,22 @@ db.once('open',  function()
 		
 		async.parallel(
 		[
+			function(callback)
+			{
+				var apiKey1 = new apiKey({
+					key    : '0000001',
+					origin : ['*'],
+				});
+				apiKey1.save(function(err) {callback(err, apiKey1)})
+			},
+			function(callback)
+			{
+				var apiKey2 = new apiKey({
+					key    : '0000002',
+					origin : ['http://p-bot.ru'],
+				});
+				apiKey2.save(function(err) {callback(err, apiKey2)})
+			},
 			function(callback)
 			{
 				var pattern1 = new Pattern({
@@ -122,3 +139,37 @@ function totalPatternsLength(callback)
 }
 exports.totalPatternsLength = totalPatternsLength;
 
+
+
+// Функция проверяет доступ для APIKEY и домена к REST API
+// *******************************************************
+function checkApiKey(apikey, origin, callback)
+{
+	console.log ('[Database] ... checkApiKey function');
+	apiKey.findOne({key: apikey}, function(err, founded_apikey)
+	{
+		if (err) 
+		{
+			callback (null, false);
+		}
+		else
+		{
+			if (founded_apikey == null) 
+			{
+				callback (null, false);
+			}
+			else
+			{
+				if (founded_apikey.origin[0] == '*') 
+				{
+					callback (null, true);
+				}
+				else
+				{
+					callback (null, false);
+				}
+			}
+		}
+	});
+}
+exports.checkApiKey = checkApiKey;

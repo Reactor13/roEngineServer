@@ -23,7 +23,8 @@ var fs           = require('fs');
 var http         = require('http');
 var url          = require('url');
 var kernel       = require('.././kernel');
-var serverConfig = require('../config')
+var serverConfig = require('../config');
+var DataBase     = require('.././database');
 
 var appServer = new http.Server(function(req,res)
 {
@@ -73,22 +74,29 @@ var appServer = new http.Server(function(req,res)
 	if (urlParsed.pathname == '/api/getAnswer')
 	{
 		correctRequest = true
-		if (urlParsed.query.question == null || urlParsed.query.question.length > 255) {correctRequest = false}
-		if (urlParsed.query.botname  == null || urlParsed.query.botname.length  > 255) {correctRequest = false}
-		if (urlParsed.query.context  != null && urlParsed.query.context.length  > 255) {correctRequest = false}
+		if (urlParsed.query.apikey   == null || urlParsed.query.apikey.length   > 255) {correctRequest = false; incorrectRequestReason += 'Apikey is missing or is too long; ';}
+		if (urlParsed.query.question == null || urlParsed.query.question.length > 255) {correctRequest = false; incorrectRequestReason += 'Question is missing or is too long; ';}
+		if (urlParsed.query.botname  == null || urlParsed.query.botname.length  > 255) {correctRequest = false; incorrectRequestReason += 'Botname is missing or is too long; ';}
+		if (urlParsed.query.context  != null && urlParsed.query.context.length  > 255) {correctRequest = false; incorrectRequestReason += 'Context is too long; ';}
 		
 		if (correctRequest)
 		{
-			res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin':'*'});			
-			kernel.getAnser(urlParsed.query.botname, urlParsed.query.question, urlParsed.query.context, function(err, answer)
-			{
+			DataBase.checkApiKey(urlParsed.query.apikey,clientOrigin,function(err, isAllowed) {
 				if (err) throw err;
-				res.end(answer); 
-			});
-		}
-		else
-		{
-			incorrectRequestReason = 'Function getAnser() validation failed...';
+				if (isAllowed === true)
+				{
+					kernel.getAnser(urlParsed.query.botname, urlParsed.query.question, urlParsed.query.context, function(err, answer){
+						if (err) throw err;
+						res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin':'*'});
+						res.end(answer); 
+					});
+				}
+				else
+				{
+					res.statusCode = 404;
+					res.end('Api key is invalid');
+				}
+			});	
 		}
 	}
 	
