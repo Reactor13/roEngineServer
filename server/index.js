@@ -32,12 +32,13 @@ var appServer = new http.Server(function(req,res)
 	var incorrectRequestReason = new String();
 	var clientIP               = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 	var clientHost             = req.headers.host;
+	var clientOrigin           = req.headers.origin;
 	
-	console.log('[Server] New request from : ' + clientIP + ', host :' + clientHost);
+	console.log('[Server] New request from : ' + clientIP + ', host :' + clientHost + ', origin : ' + clientOrigin);
 	
 	if (urlParsed.pathname == '/')
 	{
-		res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+		res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin':'*'});
 		correctRequest = true;
 		
 		fs.readFile('./templates/roEngineServerHello.txt', {encoding: 'utf-8'}, function(err, data) {
