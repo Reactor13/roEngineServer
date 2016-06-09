@@ -30,8 +30,9 @@ var appServer = new http.Server(function(req,res)
 	var urlParsed              = url.parse(req.url, true);
 	var correctRequest         = new Boolean(false);
 	var incorrectRequestReason = new String();
+	var clientIP               = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 	
-	console.log('[Server] New request from : ' + req.connection.remoteAddress);
+	console.log('[Server] New request from : ' + clientIP);
 	
 	if (urlParsed.pathname == '/')
 	{
