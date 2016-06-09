@@ -34,6 +34,7 @@ var appServer = new http.Server(function(req,res)
 	var clientHost             = req.headers.host;
 	var clientOrigin           = req.headers.origin;
 	
+	if (clientOrigin === undefined) {clientOrigin = null}
 	console.log('[Server] New request from : ' + clientIP + ', host :' + clientHost + ', origin : ' + clientOrigin);
 	
 	if (urlParsed.pathname == '/')
@@ -58,7 +59,7 @@ var appServer = new http.Server(function(req,res)
 	{
 		if (urlParsed.query.message.length < 10)
 		{
-			res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
+			res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin':'*'});
 			res.end('Echo: ' + urlParsed.query.message);
 			correctRequest = true;
 		}
@@ -78,7 +79,7 @@ var appServer = new http.Server(function(req,res)
 		
 		if (correctRequest)
 		{
-			res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});			
+			res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin':'*'});			
 			kernel.getAnser(urlParsed.query.botname, urlParsed.query.question, urlParsed.query.context, function(err, answer)
 			{
 				if (err) throw err;
