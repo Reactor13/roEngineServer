@@ -31,8 +31,9 @@ var appServer = new http.Server(function(req,res)
 	var correctRequest         = new Boolean(false);
 	var incorrectRequestReason = new String();
 	var clientIP               = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	var clientHost             = req.headers.host;
 	
-	console.log('[Server] New request from : ' + clientIP);
+	console.log('[Server] New request from : ' + clientIP + ', host :' + clientHost);
 	
 	if (urlParsed.pathname == '/')
 	{
