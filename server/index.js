@@ -34,7 +34,7 @@ var appServer = new http.Server(function(req,res)
 	var clientIP               = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 	var clientHost             = req.headers.host;
 	var clientOrigin           = req.headers.origin;
-		
+	
 	if (clientOrigin == undefined || clientOrigin == null || clientOrigin == 'null') {clientOrigin = '*'}
 	console.log('[Server] New request from : ' + clientIP + ', host :' + clientHost + ', origin : ' + clientOrigin);
 	
@@ -102,7 +102,7 @@ var appServer = new http.Server(function(req,res)
 	
 	if (correctRequest == false)
 	{
-		res.statusCode = 403
+		res.statusCode = 404
 		res.end('[ERROR] Incorrect request. ' + incorrectRequestReason);		
 	}
 })

@@ -35,6 +35,24 @@ var patternSchema = new Schema({
 	{
 		type: Array
 	},
+	topic:
+	{
+		type: Array
+	},
+	author:
+	{
+		type: String
+	},
+	sentiment:
+	{
+		type: Number,
+		default: 0
+	},
+	exactMatch:
+	{
+		type: Boolean,
+		default: false
+	},
 	answer:
 	{
 		type: String,

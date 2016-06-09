@@ -105,7 +105,7 @@ db.once('open',  function()
 		], function (err, results)
 		{
 			console.log ('[Database][Debug function] ... Test patterns created')
-		});	
+		});
 	});
 });
 
