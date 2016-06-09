@@ -31,7 +31,7 @@ var appServer = new http.Server(function(req,res)
 	var correctRequest         = new Boolean(false);
 	var incorrectRequestReason = new String();
 	
-	console.log('[Server] New request from : ' + req.headers.host);
+	console.log('[Server] New request from : ' + req.connection.remoteAddress);
 	
 	if (urlParsed.pathname == '/')
 	{
