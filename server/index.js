@@ -35,7 +35,7 @@ var appServer = new http.Server(function(req,res)
 	var clientHost             = req.headers.host;
 	var clientOrigin           = req.headers.origin;
 	
-	if (clientOrigin == undefined) {clientOrigin = '*'}
+	if (clientOrigin == undefined || clientOrigin == null) {clientOrigin = '*'}
 	console.log('[Server] New request from : ' + clientIP + ', host :' + clientHost + ', origin : ' + clientOrigin);
 	
 	if (urlParsed.pathname == '/')
