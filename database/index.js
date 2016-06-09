@@ -170,7 +170,7 @@ function checkApiKey(apikey, origin, callback)
 			}
 			else
 			{				
-				if (founded_apikey.origin.indexOf(origin) != -1) 
+				if (founded_apikey.origin.indexOf(origin) != -1 || founded_apikey.origin.indexOf('*') != -1) 
 				{
 					console.log ('[Database] ... checkApiKey function --> complete');
 					callback (null, true);
