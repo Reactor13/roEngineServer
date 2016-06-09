@@ -92,8 +92,8 @@ var appServer = new http.Server(function(req,res)
 					});
 				}
 				else
-				{
-					res.statusCode = 404;
+				{					
+					res.writeHead(403, {'Content-Type': 'text/plain; charset=utf-8', 'Access-Control-Allow-Origin':'*'});
 					res.end('[ERROR] Api key is invalid');
 				}
 			});	
