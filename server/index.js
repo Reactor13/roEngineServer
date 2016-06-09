@@ -31,6 +31,8 @@ var appServer = new http.Server(function(req,res)
 	var correctRequest         = new Boolean(false);
 	var incorrectRequestReason = new String();
 	
+	console.log('[Server] New request from : ' + req.headers.host);
+	
 	if (urlParsed.pathname == '/')
 	{
 		res.writeHead(200, {'Content-Type': 'text/plain; charset=utf-8'});
