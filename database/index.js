@@ -159,7 +159,7 @@ function checkApiKey(apikey, origin, callback)
 		if (err) 
 		{
 			console.log ('[Database] ... checkApiKey function --> complete width errors');
-			callback (null, false);
+			callback (err, false);
 		}
 		else
 		{
